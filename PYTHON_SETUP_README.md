@@ -1,6 +1,6 @@
 # Python Project Setup Script
 
-This script automates the creation of a new Python project with a standard directory structure and configuration files.
+This script automates the creation of a new Python project with a standard directory structure and configuration files. The project is created in a directory named `vsc_template`.
 
 ## Features
 
@@ -26,7 +26,7 @@ Replace `project_name` with the name of your project.
 The script creates the following structure:
 
 ```
-project_name/
+vsc_template/
 ├── project_name/
 │   ├── __init__.py
 │   └── sample.py
@@ -49,7 +49,7 @@ project_name/
 
 After creating the project:
 
-1. Navigate to the project directory: `cd project_name`
+1. Navigate to the project directory: `cd vsc_template`
 2. Activate the virtual environment: `activate.cmd`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Install the package in development mode: `pip install -e .`

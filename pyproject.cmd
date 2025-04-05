@@ -11,12 +11,12 @@ if "%~1"=="" (
 )
 
 set PROJECT_NAME=%~1
-set PROJECT_DIR=%CD%\%PROJECT_NAME%
+set PROJECT_DIR=%CD%\vsc_template
 
 REM Check if project directory already exists
 if exist "%PROJECT_DIR%" (
-    echo ERROR: Directory "%PROJECT_NAME%" already exists.
-    echo Please choose a different project name or delete the existing directory.
+    echo ERROR: Directory "vsc_template" already exists.
+    echo Please delete the existing directory before proceeding.
     exit /b 1
 )
 
