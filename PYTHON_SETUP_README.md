@@ -16,7 +16,7 @@ This script automates the creation of a new Python project with a standard direc
 ## Usage
 
 ```bash
-setup_python_project.cmd project_name
+pyproject.cmd project_name
 ```
 
 Replace `project_name` with the name of your project.
@@ -34,7 +34,7 @@ project_name/
 │   ├── __init__.py
 │   └── test_sample.py
 ├── docs/
-├── venv/
+├── venv_project_name/
 ├── setup.py
 ├── requirements.txt
 ├── dev-requirements.txt
@@ -68,6 +68,14 @@ You can customize this script to fit your specific needs by modifying the templa
 - Change the license
 - Add more directories to the project structure
 - Configure different linting rules
+
+## Benefits of Project-Specific Virtual Environments
+
+The script creates a virtual environment named `venv_[project_name]` instead of the standard `venv`. This approach offers several advantages:
+
+1. **Avoid Conflicts**: You can have multiple projects with their own isolated environments
+2. **Clear Association**: The environment name clearly indicates which project it belongs to
+3. **Better Organization**: Makes it easier to manage multiple projects on the same machine
 
 ## License
 
