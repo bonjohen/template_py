@@ -11,20 +11,34 @@ if "%~1"=="" (
 )
 
 set PROJECT_NAME=%~1
-set PROJECT_DIR=%CD%\vsc_template
 
-REM Check if project directory already exists
-if exist "%PROJECT_DIR%" (
-    echo ERROR: Directory "vsc_template" already exists.
-    echo Please delete the existing directory before proceeding.
-    exit /b 1
+REM Check if we're already in the project directory
+for %%I in (.) do set CURRENT_DIR_NAME=%%~nxI
+if "%CURRENT_DIR_NAME%"=="%PROJECT_NAME%" (
+    echo Already in %PROJECT_NAME% directory.
+    set PROJECT_DIR=%CD%
+    goto continue_setup
 )
 
-echo Creating Python project: %PROJECT_NAME%
+REM Check if project directory exists as a subfolder
+if exist "%CD%\%PROJECT_NAME%" (
+    echo %PROJECT_NAME% directory exists. Navigating to it.
+    cd "%PROJECT_NAME%"
+    set PROJECT_DIR=%CD%
+    goto continue_setup
+)
+
+REM Create and navigate to project directory
+echo Creating %PROJECT_NAME% directory...
+mkdir "%PROJECT_NAME%"
+cd "%PROJECT_NAME%"
+set PROJECT_DIR=%CD%
+
+:continue_setup
+echo Setting up Python project in: %PROJECT_DIR%
 
 REM Create project directory structure
 echo Creating directory structure...
-mkdir "%PROJECT_DIR%"
 mkdir "%PROJECT_DIR%\%PROJECT_NAME%"
 mkdir "%PROJECT_DIR%\tests"
 mkdir "%PROJECT_DIR%\docs"
@@ -391,13 +405,60 @@ echo call venv_%PROJECT_NAME%\Scripts\activate >> "%PROJECT_DIR%\activate.cmd"
 
 echo.
 echo Python project "%PROJECT_NAME%" created successfully!
+
+REM Activate the virtual environment
+echo Activating virtual environment...
+call venv_%PROJECT_NAME%\Scripts\activate
+
+REM Initialize git repository if not already initialized
+if not exist ".git" (
+    echo Initializing git repository...
+    git init
+
+    REM Create .gitignore if it doesn't exist yet (should already be created above)
+    if not exist ".gitignore" (
+        echo Creating .gitignore...
+        copy "%PROJECT_DIR%\.gitignore" ".gitignore" > nul
+    )
+
+    REM Add all files to git
+    echo Adding files to git...
+    git add .
+
+    REM Initial commit
+    echo Creating initial commit...
+    git commit -m "Initial commit for %PROJECT_NAME% project"
+) else (
+    echo Git repository already initialized.
+
+    REM Add all files to git
+    echo Adding files to git...
+    git add .
+
+    REM Commit changes
+    echo Committing changes...
+    git commit -m "Update %PROJECT_NAME% project structure"
+)
+
+REM Check if remote exists and sync
+git remote -v | findstr origin > nul
+if %ERRORLEVEL% == 0 (
+    echo Syncing with remote repository...
+    git pull --rebase
+    git push
+) else (
+    echo No remote repository configured.
+    echo To add a remote repository, use: git remote add origin [repository-url]
+    echo Then push with: git push -u origin main
+)
+
 echo.
-echo To get started:
-echo 1. cd %PROJECT_NAME%
-echo 2. activate.cmd
-echo 3. pip install -r requirements.txt
-echo 4. pip install -e .
-echo 5. pytest
+echo Setup complete! You are now in the activated virtual environment.
+echo.
+echo Next steps:
+echo 1. pip install -r requirements.txt
+echo 2. pip install -e .
+echo 3. pytest
 echo.
 echo Happy coding!
 

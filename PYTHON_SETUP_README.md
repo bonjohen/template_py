@@ -1,6 +1,6 @@
 # Python Project Setup Script
 
-This script automates the creation of a new Python project with a standard directory structure and configuration files. The project is created in a directory named `vsc_template`.
+This script automates the creation of a new Python project with a standard directory structure and configuration files. It also initializes a git repository, makes an initial commit, and syncs with a remote repository if one is configured.
 
 ## Features
 
@@ -21,12 +21,20 @@ pyproject.cmd project_name
 
 Replace `project_name` with the name of your project.
 
+The script will:
+1. Check if you're already in a directory named `project_name`
+2. If not, check if a `project_name` directory exists as a subfolder and navigate to it
+3. If neither, create a new `project_name` directory and navigate to it
+4. Set up the project structure
+5. Activate the virtual environment
+6. Initialize git, commit, and sync if a remote is configured
+
 ## Project Structure
 
 The script creates the following structure:
 
 ```
-vsc_template/
+project_name/
 ├── project_name/
 │   ├── __init__.py
 │   └── sample.py
@@ -47,13 +55,14 @@ vsc_template/
 
 ## Getting Started
 
-After creating the project:
+After running the script:
 
-1. Navigate to the project directory: `cd vsc_template`
-2. Activate the virtual environment: `activate.cmd`
-3. Install dependencies: `pip install -r requirements.txt`
-4. Install the package in development mode: `pip install -e .`
-5. Run tests: `pytest`
+1. You'll already be in the project directory with the virtual environment activated
+2. Install dependencies: `pip install -r requirements.txt`
+3. Install the package in development mode: `pip install -e .`
+4. Run tests: `pytest`
+
+If you need to activate the virtual environment later, use the `activate.cmd` script.
 
 ## Requirements
 
